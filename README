@@ -1,0 +1,80 @@
+#title
+ A simple DNS spoofing server which send a fixed IP address to all A type queries.
+
+#build status
+ - single thread
+ - UDP socket based with hard coded port number 53
+ - Assumed requested packets are IPv4 based packets
+ - Assumed request packets are not encrypted 
+ - response only to DNS requset messages with 1 request field and A type
+ - sends esponse to all messages with the fixed values in the message Answer field
+      - response IP addr, TTL value are hard coded
+ - compiling flags are hard coded in the header file
+
+
+#compilation information
+ -has been compiled with clang compiler with following inforamtion:
+     --Apple LLVM version 10.0.0 (clang-1000.10.44.4)
+     --Target: x86_64-apple-darwin17.3.0
+     --Thread model: posix
+ -host OS version
+     --macOS High Sierra
+     --version 10.13.2 
+
+#compilation options
+ -make all
+ -make dnsSpoofing
+ -make dnsTest
+ -make clean
+
+#debuging
+  - DEBUG flag needs to be set in dnsSpoofing.h file
+  - Default is off
+
+#defined comilation flags
+  - A debuging flag
+
+
+#test 
+  
+  Test 1:
+  box1: sudo ./dnsSpoofing
+
+  box2:  dig  @127.0.0.1 www.example.com
+
+  ; <<>> DiG 9.9.7-P3 <<>> @127.0.0.1 www.example.com
+  ; (1 server found)
+  ;; global options: +cmd
+  ;; Got answer:
+  ;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 38196
+  ;; flags: qr; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 0
+
+  ;; QUESTION SECTION:
+  ;www.example.com.		IN	A
+
+  ;; ANSWER SECTION:
+  www.example.com.	43690	IN	A	6.6.6.6
+
+  ;; Query time: 0 msec
+  ;; SERVER: 127.0.0.1#53(127.0.0.1)
+  ;; WHEN: Thu Mar 30 01:08:30 PDT 2023
+  ;; MSG SIZE  rcvd: 49
+  
+  Test 2:
+  box 1: sudo ./dnsSpoofing
+  box 2: ./dnsTest
+
+#Not tested
+ -DNS server has not been tested for a very long name in the Question structure. 
+
+#Resources
+   https://www.ietf.org/rfc/rfc1035.txt
+   https://opensource.apple.com/source/netinfo/netinfo-208/common/dns.h.auto.html
+   https://w3.cs.jmu.edu/kirkpams/OpenCSF/Books/csf/html/UDPSockets.html
+
+#License
+  N/A
+
+
+
+

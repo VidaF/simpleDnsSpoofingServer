@@ -1,0 +1,25 @@
+#title
+ -client socket for unit testing DNS Spoofing server
+#
+ -a UDP client sends reequest packets to the DNS server and receives the response from server
+#compile
+ -<make dnsTest> in main directory 
+ 
+
+#Excuation
+  -box1: sudo ./dnsSpoofing
+  -box2: ./dnsTest
+
+#expected output
+  - If DNS server won't response if it  receives a request msg which is not supported by DNS server or a msg is corrupted
+    - Output in client side: timeout or the resource is not available
+  - If DNS response
+    -Output in client side: checkes if the response message is correct
+
+#test scenarios:
+   - TX  message with different HDR flags
+   - TX message with qType other than 'A' type
+   - TX message with different name length
+   - TX message with a corrupted name length
+
+    
